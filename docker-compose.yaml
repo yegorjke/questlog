@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: questlog
+    ports:
+      - "5432:5432"
+
+  questlog:
+    build: .
+    volumes:
+      - .:/questlog
+    env_file:
+      - .env.docker
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    command: ["uvicorn", "questlog.app:app", "--host", "0.0.0.0"]
