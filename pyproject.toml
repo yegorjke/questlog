@@ -1,21 +1,18 @@
-[project]
+[tool.poetry]
 name = "questlog"
 version = "0.0.0"
 description = ""
-authors = [
-    {name = "yegorjke",email = "yegorjke@gmail.com"}
-]
-readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-    "sqlalchemy (>=2.0.42,<3.0.0)",
-    "fastapi (>=0.116.1,<0.117.0)",
-    "asyncpg (>=0.30.0,<0.31.0)",
-    "alembic (>=1.16.4,<2.0.0)",
-    "uvicorn[standard] (>=0.35.0,<0.36.0)"
-]
+authors = ["Yehor Ternovyi <yegorjke@gmail.com>"]
 
-[tool.poetry]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.13"
+sqlalchemy = ">=2.0.42,<3.0.0"
+fastapi = ">=0.116.1,<0.117.0"
+asyncpg = ">=0.30.0,<0.31.0"
+alembic = ">=1.16.4,<2.0.0"
+uvicorn = {extras = ["standard"], version = ">=0.35.0,<0.36.0"}
 
 [tool.poetry.group.dev.dependencies]
 httpx = "^0.28.1"
