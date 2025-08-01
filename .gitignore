@@ -136,6 +136,8 @@ celerybeat.pid
 
 # Environments
 .env
+.env.docker
+.env.migrations
 .envrc
 .venv
 env/
@@ -203,7 +205,6 @@ __marimo__/
 .streamlit/secrets.toml
 
 
-.env.docker
 
 .vscode/launch.json
 .vscode/tasks.json
