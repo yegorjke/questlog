@@ -1,0 +1,12 @@
+line-length = 120
+exclude = [".venv"]
+
+[lint]
+select = ["E", "F", "I"] # pycodestyle, pyflakes, isort
+ignore = ["E402", "F401"]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+docstring-code-line-length = 40

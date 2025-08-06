@@ -1,5 +1,5 @@
-
 from pydantic_settings import BaseSettings
+
 
 class Settings(BaseSettings):
     database_url: str
@@ -7,5 +7,5 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env.migrations"
 
-settings = Settings()
 
+settings = Settings()
