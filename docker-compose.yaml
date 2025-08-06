@@ -14,9 +14,8 @@ services:
     volumes:
       - .:/questlog
     env_file:
-      - .env.docker
+      - .env.docker  # make sure you created that one from .env.example
     depends_on:
       - db
     ports:
       - "8000:8000"
-    command: ["uvicorn", "questlog.app:app", "--host", "0.0.0.0"]

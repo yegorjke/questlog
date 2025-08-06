@@ -4,25 +4,33 @@ EXPOSE 8000
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-ENV POETRY_VERSION=1.8.2
+ENV UV_SYSTEM_PYTHON=1
 
 RUN apt-get update && apt-get install -y \
-    curl build-essential libpq-dev && \
+    curl ca-certificates build-essential libpq-dev && \
     apt-get clean
 
-RUN curl -sSL https://install.python-poetry.org | python3 -
+# Wait-for-it utility
+RUN curl --silent -o wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+RUN chmod +x wait-for-it.sh
 
-ENV PATH="/root/.local/bin:$PATH"
+# Download and install uv
+ADD https://astral.sh/uv/install.sh /uv-installer.sh
+RUN sh /uv-installer.sh && \
+    mv /root/.local/bin/uv /usr/local/bin/uv && \
+    rm /uv-installer.sh
 
+RUN adduser -uid 5678 --disabled-password --gecos "" appuser
+
+# Сopy files and install dependencies
 WORKDIR /app
-COPY pyproject.toml poetry.lock* ./
-
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi
-
+RUN chown -R appuser:appuser /app
 COPY . .
+COPY .env.docker .env
+RUN uv sync --locked --no-dev --no-install-project
+RUN chmod +x ./entrypoint.sh
 
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
 USER appuser
 
-CMD ["uvicorn", "questlog.app:app", "--host", "0.0.0.0", "--port", "8000"]
+ENTRYPOINT ["./entrypoint.sh"]
+CMD ["uv", "run", "--no-sync", "uvicorn", "questlog.app:app", "--host", "0.0.0.0", "--port", "8000"]
